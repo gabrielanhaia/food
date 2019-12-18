@@ -8,7 +8,7 @@ namespace App\Repositories\DTO;
  * It's much better to test and control what is being passed as a param.
  * @package App\Repositories\DTO
  */
-interface DtoInterface
+interface DTOInterface
 {
 
 }
