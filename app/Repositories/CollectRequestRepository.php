@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\CollectStatusEnum;
 use App\Exceptions\Api\ConflictException;
 use App\Exceptions\Api\NotFoundException;
 use App\Models\CollectRequest;
@@ -69,10 +70,30 @@ class CollectRequestRepository extends BaseRepository
      * @param int $identifier Identifier of the entity.
      * @param DTOInterface $dataToBeUpdated Data to be updated.
      * @return CollectRequest
+     * @throws NotFoundException
      */
     public function update(int $identifier, DTOInterface $dataToBeUpdated): Model
     {
-        // TODO: Implement update() method.
+        $collectRequest = $this->model
+            ->where('id', '=', $identifier)
+            ->where('status', '=', CollectStatusEnum::PENDING)
+            ->first();
+
+        if (empty($collectRequest)) {
+            throw new NotFoundException('Collect request not-found or already processed.');
+        }
+
+        $collectRequest->update([
+            'id_product' => $dataToBeUpdated->getIdProduct(),
+            'quantity' => $dataToBeUpdated->getQuantity(),
+            'unit_of_measurement' => $dataToBeUpdated->getUnitOfMeasurement(),
+            'name_responsible' => $dataToBeUpdated->getNameResponsible(),
+            'collection_start_time' => $dataToBeUpdated->getCollectStartTime(),
+            'collection_end_time' => $dataToBeUpdated->getCollectEndTime(),
+            'description' => ''
+        ]);
+
+        return $collectRequest;
     }
 
     /**

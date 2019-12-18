@@ -5,12 +5,12 @@ namespace App\Http\Requests\Api\V1;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class CreateCollectRequest
+ * Class UpdateCollectRequest
  * @package App\Http\Requests\Api\V1
  *
  * @author Gabriel Anhaia <anhaia.gabriel@gmail.com>
  */
-class CreateCollectRequest extends FormRequest
+class UpdateCollectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
