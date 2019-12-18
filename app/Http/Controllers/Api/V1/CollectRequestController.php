@@ -7,6 +7,7 @@ use App\Enums\HttpStatusCodeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\CreateCollectRequest;
 use App\Http\Requests\Api\V1\UpdateCollectRequest;
+use App\Http\Resources\Api\V1\CollectRequestCollection;
 use App\Models\CollectRequest;
 use App\Repositories\{CollectRequestRepository, DTO\CollectRequestDTO};
 use Carbon\Carbon;
@@ -66,6 +67,7 @@ class CollectRequestController extends Controller
      * @param int $collectRequestId Collect request id to be updated.
      * @param UpdateCollectRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\Api\NotFoundException
      */
     public function updateCollectRequest(int $collectRequestId, UpdateCollectRequest $request)
     {
@@ -93,6 +95,6 @@ class CollectRequestController extends Controller
     {
         $products = $this->collectRequestRepository->getAll();
 
-//        return new ProductCollection($products);
+        return new CollectRequestCollection($products);
     }
 }
