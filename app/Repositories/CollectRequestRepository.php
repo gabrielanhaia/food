@@ -43,14 +43,21 @@ class CollectRequestRepository extends BaseRepository
     }
 
     /**
-     * Get one specific data from a entity.
+     * Get one specific data from a collect request.
      *
      * @param int $identifier Identifier of the entity.
      * @return CollectRequest
+     * @throws NotFoundException
      */
     public function get(int $identifier): Model
     {
-        // TODO: Implement get() method.
+        $collectRequest = $this->model->find($identifier);
+
+        if (empty($collectRequest)) {
+            throw new NotFoundException('Collect request not-found.');
+        }
+
+        return $collectRequest;
     }
 
     /**

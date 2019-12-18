@@ -97,4 +97,18 @@ class CollectRequestController extends Controller
 
         return new CollectRequestCollection($products);
     }
+
+    /**
+     * Get a collect request.
+     *
+     * @param int $collectRequestId Collect request id to be updated.
+     * @return \App\Http\Resources\Api\V1\CollectRequest
+     * @throws \App\Exceptions\Api\NotFoundException
+     */
+    public function getCollectRequest(int $collectRequestId)
+    {
+        $collectRequest = $this->collectRequestRepository->get($collectRequestId);
+
+        return new \App\Http\Resources\Api\V1\CollectRequest($collectRequest);
+    }
 }
