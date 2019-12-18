@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\V1\ProductCollection;
+use App\Http\Resources\Api\V1\ProductCollect;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 
@@ -33,6 +33,6 @@ class ProductController extends Controller
     {
         $products = $this->productRepository->getAll();
 
-        return new ProductCollection($products);
+        return new ProductCollect($products);
     }
 }

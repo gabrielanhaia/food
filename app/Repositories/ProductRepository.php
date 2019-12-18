@@ -4,6 +4,8 @@
 namespace App\Repositories;
 
 use App\Models\Product;
+use App\Repositories\DTO\DTOInterface;
+use Illuminate\Database\Eloquent\Model;
 
 
 /**
@@ -67,5 +69,16 @@ class ProductRepository extends BaseRepository
     public function update(int $identifier, \App\Repositories\DTO\DTOInterface $dataToBeUpdated): \Illuminate\Database\Eloquent\Model
     {
         // TODO: Implement update() method.
+    }
+
+    /**
+     * Register and entity.
+     *
+     * @param DTOInterface $dataToBeUpdated
+     * @return Model
+     */
+    public function create(DTOInterface $dataToBeUpdated): Model
+    {
+        // TODO: Implement create() method.
     }
 }

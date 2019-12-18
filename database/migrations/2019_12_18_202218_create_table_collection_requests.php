@@ -24,8 +24,8 @@ class CreateTableCollectionRequests extends Migration
             $table->enum('status', ['PENDING', 'APPROVED', 'COLLECTED']);
             $table->text('description');
             $table->string('name_responsible');
-            $table->dateTime('collection_start_time');
-            $table->dateTime('collection_end_time');
+            $table->dateTime('collect_start_time');
+            $table->dateTime('collect_end_time');
             $table->timestamps();
         });
 
