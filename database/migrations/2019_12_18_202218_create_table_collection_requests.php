@@ -20,7 +20,7 @@ class CreateTableCollectionRequests extends Migration
     {
         Schema::create('collection_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_product')->unsigned()->nullable(false);
+            $table->bigInteger('id_product')->unsigned()->nullable(false);
             $table->enum('status', ['PENDING', 'APPROVED', 'COLLECTED']);
             $table->text('description');
             $table->string('name_responsible');
@@ -30,7 +30,7 @@ class CreateTableCollectionRequests extends Migration
         });
 
         Schema::table('collection_requests', function (Blueprint $table) {
-            $table->foreign('id_product', 'fk_collection_requests')
+            $table->foreign('id_product', 'fk_collection_requests_id_product')
                 ->references('id')
                 ->on('products')
                 ->onUpdate('NO ACTION')
