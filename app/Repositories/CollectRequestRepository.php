@@ -61,14 +61,24 @@ class CollectRequestRepository extends BaseRepository
     }
 
     /**
-     * Delete on entity.
+     * Delete a collect request (pending).
      *
      * @param int $identifier Identifier of the entity.
      * @return mixed
+     * @throws NotFoundException
      */
     public function delete(int $identifier)
     {
-        // TODO: Implement delete() method.
+        $collectRequest = $this->model
+            ->where('id', '=', $identifier)
+            ->where('status', '=', CollectStatusEnum::PENDING)
+            ->first();
+
+        if (empty($collectRequest)) {
+            throw new NotFoundException('Collect request not-found or already processed.');
+        }
+
+        $collectRequest->delete();
     }
 
     /**

@@ -111,4 +111,19 @@ class CollectRequestController extends Controller
 
         return new \App\Http\Resources\Api\V1\CollectRequest($collectRequest);
     }
+
+    /**
+     *
+     * Cancel a collect request.
+     *
+     * @param int $collectRequestId Collect request id to be updated.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \App\Exceptions\Api\NotFoundException
+     */
+    public function cancelCollectRequest(int $collectRequestId)
+    {
+        $this->collectRequestRepository->delete($collectRequestId);
+
+        return response('', HttpStatusCodeEnum::NO_CONTENT);
+    }
 }
