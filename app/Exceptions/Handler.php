@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Enums\HttpStatusCodeEnum;
+use App\Exceptions\Api\ApiException;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -49,11 +50,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof AuthenticationException) {
+        if ($exception instanceof ApiException) {
             return response()->json([
                 'success' => false,
-                'message' => 'Token is invalid'
-            ], HttpStatusCodeEnum::UNAUTHORIZED);
+                'message' => $exception->getHttpStatusCode()->getMessage()
+            ], $exception->getHttpStatusCode()->value());
+        }
+
+            if ($exception instanceof AuthenticationException) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token is invalid'
+                ], HttpStatusCodeEnum::UNAUTHORIZED);
         }
 
         return parent::render($request, $exception);

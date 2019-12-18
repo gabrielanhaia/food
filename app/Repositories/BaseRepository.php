@@ -54,4 +54,13 @@ abstract class BaseRepository
      * @return Model
      */
     public abstract function update(int $identifier, DTOInterface $dataToBeUpdated): Model;
+
+    /**
+     * Register and entity.
+     *
+     * @param DTOInterface $dataToBeUpdated
+     * @return Model
+     */
+    public abstract function create(DTOInterface $dataToBeUpdated): Model;
+
 }

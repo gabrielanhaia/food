@@ -19,5 +19,22 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::get('me', 'AuthController@me');
+});
+
+
+Route::group([
+    'prefix' => 'products',
+], function ($router) {
+    Route::get('', 'ProductController@listProducts');
+});
+
+Route::group([
+    'prefix' => 'collect-requests',
+], function ($router) {
+    Route::post('', 'CollectRequestController@createCollectRequest');
+    Route::get('{id}', 'CollectRequestController@getCollectRequest');
+    Route::get('', 'CollectRequestController@listCollectRequest');
+    Route::put('{id}', 'CollectRequestController@updateCollectRequest');
+    Route::delete('{id}', 'CollectRequestController@deleteCollectRequest');
 });
