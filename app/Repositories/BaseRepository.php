@@ -3,7 +3,7 @@
 
 namespace App\Repositories;
 
-use App\Repositories\DTO\DtoInterface;
+use App\Repositories\DTO\DTOInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -50,8 +50,8 @@ abstract class BaseRepository
      * Update one specific entity.
      *
      * @param int $identifier Identifier of the entity.
-     * @param DtoInterface $dataToBeUpdated Data to be updated.
+     * @param DTOInterface $dataToBeUpdated Data to be updated.
      * @return Model
      */
-    public abstract function update(int $identifier, DtoInterface $dataToBeUpdated): Model;
+    public abstract function update(int $identifier, DTOInterface $dataToBeUpdated): Model;
 }
