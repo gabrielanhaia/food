@@ -34,7 +34,7 @@ Route::group([
 ], function ($router) {
     Route::post('', 'CollectRequestController@createCollectRequest');
     Route::get('{id}', 'CollectRequestController@getCollectRequest');
-    Route::get('', 'CollectRequestController@listCollectRequest');
+    Route::get('', 'CollectRequestController@listAllCollectRequests');
     Route::put('{id}', 'CollectRequestController@updateCollectRequest');
     Route::delete('{id}', 'CollectRequestController@deleteCollectRequest');
 });

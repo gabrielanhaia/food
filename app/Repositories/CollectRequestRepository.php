@@ -32,7 +32,7 @@ class CollectRequestRepository extends BaseRepository
     }
 
     /**
-     * Return all data from a entity.
+     * Return all collect requests.
      * @return mixed
      */
     public function getAll()
