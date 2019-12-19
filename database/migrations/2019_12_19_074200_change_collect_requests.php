@@ -5,11 +5,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class AddFieldsUnitCollectRequest
+ * Class ChangeCollectRequests
  *
  * @author Gabriel Anhaia <anhaia.gabriel@gmail.com>
  */
-class AddFieldsUnitCollectRequest extends Migration
+class ChangeCollectRequests extends Migration
 {
     /**
      * Run the migrations.
@@ -19,8 +19,8 @@ class AddFieldsUnitCollectRequest extends Migration
     public function up()
     {
         Schema::table('collect_requests', function (Blueprint $table) {
-            $table->string('quantity')->after('description');
-            $table->enum('unit_of_measurement', ['g', 'L', 'm', 'c'])->after('quantity');
+            $table->dropColumn('quantity');
+            $table->dropColumn('unit_of_measurement');
         });
     }
 
@@ -32,8 +32,8 @@ class AddFieldsUnitCollectRequest extends Migration
     public function down()
     {
         Schema::table('collect_requests', function (Blueprint $table) {
-            $table->dropColumn('quantity');
-            $table->dropColumn('unit_of_measurement');
+            $table->string('quantity')->after('description');
+            $table->enum('unit_of_measurement', ['g', 'L', 'm', 'c'])->after('quantity');
         });
     }
 }
