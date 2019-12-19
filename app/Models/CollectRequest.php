@@ -17,13 +17,31 @@ class CollectRequest extends Model
 
     /** @var array $fillable */
     protected $fillable = [
-        'id_product',
         'status',
-        'quantity',
-        'unit_of_measurement',
         'name_responsible',
         'collection_start_time',
         'collection_end_time',
         'description'
     ];
+
+    /**
+     * List of products on an order request.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            CollectRequestProduct::class,
+            'id_collect_request',
+            'id_product',
+            'id',
+            'id'
+        )->withPivot([
+            'quantity',
+            'unit_of_measurement',
+            'note'
+        ]);
+    }
 }

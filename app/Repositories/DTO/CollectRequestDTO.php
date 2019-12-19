@@ -11,9 +11,6 @@ use Carbon\Carbon;
  */
 class CollectRequestDTO implements DTOInterface
 {
-    /** @var int $idProduct Product indetifier. */
-    protected $idProduct;
-
     /** @var string $status Status collection */
     protected $status;
 
@@ -26,56 +23,31 @@ class CollectRequestDTO implements DTOInterface
     /** @var Carbon $collectEndTime Date time available for the collect end. */
     protected $collectEndTime;
 
-    /** @var string $quantity Quantity of products. */
-    protected $quantity;
-
-    /** @var string $unitOfMeasurement */
-    protected $unitOfMeasurement;
+    /** @var CollectRequestProductDTO[]|array $products List of products. */
+    protected $products;
 
     /**
      * CollectRequestDTO constructor.
-     * @param int $idProduct
+     *
      * @param string $status
      * @param string $nameResponsible
      * @param Carbon $collectStartTime
      * @param Carbon $collectEndTime
-     * @param string $quantity
-     * @param string $unitOfMeasurement
+     * @param CollectRequestProductDTO[] $products[] List of products on the request.
      */
     public function __construct(
-        int $idProduct,
         string $status,
         string $nameResponsible,
         Carbon $collectStartTime,
         Carbon $collectEndTime,
-        string $quantity,
-        string $unitOfMeasurement)
+        array $products = []
+    )
     {
-        $this->idProduct = $idProduct;
         $this->status = $status;
         $this->nameResponsible = $nameResponsible;
         $this->collectStartTime = $collectStartTime;
         $this->collectEndTime = $collectEndTime;
-        $this->quantity = $quantity;
-        $this->unitOfMeasurement = $unitOfMeasurement;
-    }
-
-    /**
-     * @return int
-     */
-    public function getIdProduct(): int
-    {
-        return $this->idProduct;
-    }
-
-    /**
-     * @param int $idProduct
-     * @return CollectRequestDTO
-     */
-    public function setIdProduct(int $idProduct): CollectRequestDTO
-    {
-        $this->idProduct = $idProduct;
-        return $this;
+        $this->products = $products;
     }
 
     /**
@@ -151,38 +123,20 @@ class CollectRequestDTO implements DTOInterface
     }
 
     /**
-     * @return string
+     * @return CollectRequestProductDTO[]
      */
-    public function getQuantity(): string
+    public function getProducts(): array
     {
-        return $this->quantity;
+        return $this->products;
     }
 
     /**
-     * @param string $quantity
-     * @return CollectRequestDTO
+     * @param CollectRequestProductDTO[] $products
+     * @return CollectRequestDTO[]
      */
-    public function setQuantity(string $quantity): CollectRequestDTO
+    public function setProducts(array $products): array
     {
-        $this->quantity = $quantity;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasurement(): string
-    {
-        return $this->unitOfMeasurement;
-    }
-
-    /**
-     * @param string $unitOfMeasurement
-     * @return CollectRequestDTO
-     */
-    public function setUnitOfMeasurement(string $unitOfMeasurement): CollectRequestDTO
-    {
-        $this->unitOfMeasurement = $unitOfMeasurement;
+        $this->products = $products;
         return $this;
     }
 }
