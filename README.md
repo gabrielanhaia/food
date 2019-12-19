@@ -12,7 +12,7 @@ Besides that, the system generates a receipt with the information and date when 
  
  ## Technologies
  
- - PHP 7.3
+ - PHP 7.2
  - Laravel Framework
  - Logs/Monolog (It's possible to change the driver from local-files to AWS, etc)
  - PHPUnit
