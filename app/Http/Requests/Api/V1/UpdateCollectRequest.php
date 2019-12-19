@@ -30,13 +30,11 @@ class UpdateCollectRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_product' => 'required|integer',
+            'products' => 'nullable|array',
             'description' => 'string',
             'name_responsible' => 'string|required',
             'collection_start_time' => 'required|date_format:Y-m-d H:i:s',
             'collection_end_time' => 'required|date_format:Y-m-d H:i:s',
-            'quantity' => 'integer|required',
-            'unit_of_measurement' => 'string|required|in:g,L,m,c'
         ];
     }
 }

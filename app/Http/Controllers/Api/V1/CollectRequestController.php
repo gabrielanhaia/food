@@ -9,7 +9,7 @@ use App\Http\Requests\Api\V1\CreateCollectRequest;
 use App\Http\Requests\Api\V1\UpdateCollectRequest;
 use App\Http\Resources\Api\V1\CollectRequestCollection;
 use App\Models\CollectRequest;
-use App\Repositories\{CollectRequestRepository, DTO\CollectRequestDTO};
+use App\Repositories\{CollectRequestRepository, DTO\CollectRequestDTO, DTO\CollectRequestProductDTO};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -44,14 +44,25 @@ class CollectRequestController extends Controller
      */
     public function createCollectRequest(CreateCollectRequest $request)
     {
+        $products = [];
+
+        if (is_array($request->post('products'))) {
+            foreach ($request->post('products') as $product) {
+                $products[] = new CollectRequestProductDTO(
+                    $product['id'],
+                    $product['quantity'],
+                    $product['unit_of_measurement'],
+                    !empty($product['note']) ? $product['note'] : ''
+                );
+            }
+        }
+
         $collectRequestDTO = new CollectRequestDTO(
-            $request->post('id_product'),
             CollectStatusEnum::PENDING,
             $request->post('name_responsible'),
             Carbon::createFromFormat('Y-m-d H:i:s', $request->post('collection_start_time')),
             Carbon::createFromFormat('Y-m-d H:i:s', $request->post('collection_end_time')),
-            $request->post('quantity'),
-            $request->post('unit_of_measurement')
+            $products
         );
 
         $collectCreated = $this->collectRequestRepository->create($collectRequestDTO);
@@ -71,13 +82,25 @@ class CollectRequestController extends Controller
      */
     public function updateCollectRequest(int $collectRequestId, UpdateCollectRequest $request)
     {
+        $products = [];
+
+        if (is_array($request->post('products'))) {
+            foreach ($request->post('products') as $product) {
+                $products[] = new CollectRequestProductDTO(
+                    $product['id'],
+                    $product['quantity'],
+                    $product['unit_of_measurement'],
+                    !empty($product['note']) ? $product['note'] : ''
+                );
+            }
+        }
+
         $collectRequestDTO = new CollectRequestDTO(
             CollectStatusEnum::PENDING,
             $request->post('name_responsible'),
             Carbon::createFromFormat('Y-m-d H:i:s', $request->post('collection_start_time')),
             Carbon::createFromFormat('Y-m-d H:i:s', $request->post('collection_end_time')),
-            $request->post('quantity'),
-            $request->post('unit_of_measurement')
+            $products
         );
 
         $collectCreated = $this->collectRequestRepository->update($collectRequestId, $collectRequestDTO);

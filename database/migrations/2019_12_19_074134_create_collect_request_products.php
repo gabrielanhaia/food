@@ -18,7 +18,7 @@ class CreateCollectRequestProducts extends Migration
      */
     public function up()
     {
-        Schema::create('collect_request_products', function (Blueprint $table) {
+        Schema::create('collect_request_product', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('id_collect_request')->unsigned()->nullable(false);
             $table->bigInteger('id_product')->unsigned()->nullable(false);
@@ -29,7 +29,7 @@ class CreateCollectRequestProducts extends Migration
             $table->timestamps();
         });
 
-        Schema::table('collect_request_products', function(Blueprint $table)
+        Schema::table('collect_request_product', function(Blueprint $table)
         {
             $table->foreign('id_collect_request', 'fk1_collect_requests_products_id_order_request')
                 ->references('id')
@@ -52,6 +52,6 @@ class CreateCollectRequestProducts extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collect_request_products');
+        Schema::dropIfExists('collect_request_product');
     }
 }

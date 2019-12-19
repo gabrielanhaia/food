@@ -7,8 +7,8 @@ use App\Enums\CollectStatusEnum;
 use App\Exceptions\Api\ConflictException;
 use App\Exceptions\Api\NotFoundException;
 use App\Models\CollectRequest;
-use App\Models\Product;
 use App\Repositories\DTO\CollectRequestDTO;
+use App\Repositories\DTO\CollectRequestProductDTO;
 use App\Repositories\DTO\DTOInterface;
 use Illuminate\Database\Eloquent\Model;
 
@@ -85,7 +85,7 @@ class CollectRequestRepository extends BaseRepository
      * Update one specific entity.
      *
      * @param int $identifier Identifier of the entity.
-     * @param DTOInterface $dataToBeUpdated Data to be updated.
+     * @param CollectRequestDTO|DTOInterface $dataToBeUpdated Data to be updated.
      * @return CollectRequest
      * @throws NotFoundException
      */
@@ -101,14 +101,25 @@ class CollectRequestRepository extends BaseRepository
         }
 
         $collectRequest->update([
-            'id_product' => $dataToBeUpdated->getIdProduct(),
-            'quantity' => $dataToBeUpdated->getQuantity(),
-            'unit_of_measurement' => $dataToBeUpdated->getUnitOfMeasurement(),
+            'status' => $dataToBeUpdated->getStatus(),
             'name_responsible' => $dataToBeUpdated->getNameResponsible(),
             'collection_start_time' => $dataToBeUpdated->getCollectStartTime(),
             'collection_end_time' => $dataToBeUpdated->getCollectEndTime(),
             'description' => ''
         ]);
+
+        $collectRequest->products()->sync([]);
+
+        if (!empty($dataToBeUpdated->getProducts())) {
+            /** @var CollectRequestProductDTO $product */
+            foreach ($dataToBeUpdated->getProducts() as $product) {
+                $collectRequest->products()->attach($product->getIdProduct(), [
+                    'quantity' => $product->getQuantity(),
+                    'unit_of_measurement' => $product->getUnitOfMeasure(),
+                    'note' => $product->getNote(),
+                ]);
+            }
+        }
 
         return $collectRequest;
     }
@@ -116,16 +127,16 @@ class CollectRequestRepository extends BaseRepository
     /**
      * Register a collect request.
      *
-     * @param CollectRequestDTO $dataToBeUpdated
+     * @param DTOInterface|CollectRequestDTO $dataToBeCreated
      * @return Model
      * @throws ConflictException
      */
-    public function create(DTOInterface $dataToBeUpdated): Model
+    public function create(DTOInterface $dataToBeCreated): Model
     {
         $alreadyExistsARequestSameDate = $this->model
-            ->whereDate('collection_start_time', '=', $dataToBeUpdated->getCollectStartTime())
-            ->whereDate('collection_end_time', '=', $dataToBeUpdated->getCollectEndTime())
-            ->where('status', '=', $dataToBeUpdated->getStatus())
+            ->whereDate('collection_start_time', '=', $dataToBeCreated->getCollectStartTime())
+            ->whereDate('collection_end_time', '=', $dataToBeCreated->getCollectEndTime())
+            ->where('status', '=', $dataToBeCreated->getStatus())
             ->first();
 
         if (!empty($alreadyExistsARequestSameDate)) {
@@ -133,15 +144,23 @@ class CollectRequestRepository extends BaseRepository
         }
 
         $collectRequest = $this->model::create([
-            'id_product' => $dataToBeUpdated->getIdProduct(),
-            'status' => $dataToBeUpdated->getStatus(),
-            'quantity' => $dataToBeUpdated->getQuantity(),
-            'unit_of_measurement' => $dataToBeUpdated->getUnitOfMeasurement(),
-            'name_responsible' => $dataToBeUpdated->getNameResponsible(),
-            'collection_start_time' => $dataToBeUpdated->getCollectStartTime(),
-            'collection_end_time' => $dataToBeUpdated->getCollectEndTime(),
+            'status' => $dataToBeCreated->getStatus(),
+            'name_responsible' => $dataToBeCreated->getNameResponsible(),
+            'collection_start_time' => $dataToBeCreated->getCollectStartTime(),
+            'collection_end_time' => $dataToBeCreated->getCollectEndTime(),
             'description' => ''
         ]);
+
+        if (!empty($dataToBeCreated->getProducts())) {
+            /** @var CollectRequestProductDTO $product */
+            foreach ($dataToBeCreated->getProducts() as $product) {
+                $collectRequest->products()->attach($product->getIdProduct(), [
+                    'quantity' => $product->getQuantity(),
+                    'unit_of_measurement' => $product->getUnitOfMeasure(),
+                    'note' => $product->getNote(),
+                ]);
+            }
+        }
 
         return $collectRequest;
     }
