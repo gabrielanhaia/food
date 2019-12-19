@@ -72,7 +72,6 @@ class CollectRequestController extends Controller
     public function updateCollectRequest(int $collectRequestId, UpdateCollectRequest $request)
     {
         $collectRequestDTO = new CollectRequestDTO(
-            $request->post('id_product'),
             CollectStatusEnum::PENDING,
             $request->post('name_responsible'),
             Carbon::createFromFormat('Y-m-d H:i:s', $request->post('collection_start_time')),

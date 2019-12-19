@@ -43,15 +43,14 @@ class CollectRequestDTO implements DTOInterface
      * @param string $unitOfMeasurement
      */
     public function __construct(
-        int $idProduct,
         string $status,
         string $nameResponsible,
         Carbon $collectStartTime,
         Carbon $collectEndTime,
         string $quantity,
-        string $unitOfMeasurement)
+        string $unitOfMeasurement
+    )
     {
-        $this->idProduct = $idProduct;
         $this->status = $status;
         $this->nameResponsible = $nameResponsible;
         $this->collectStartTime = $collectStartTime;

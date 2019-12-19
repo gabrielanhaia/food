@@ -19,8 +19,6 @@ class CollectRequest extends Model
     protected $fillable = [
         'id_product',
         'status',
-        'quantity',
-        'unit_of_measurement',
         'name_responsible',
         'collection_start_time',
         'collection_end_time',
