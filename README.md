@@ -10,6 +10,9 @@ The places could access the API by a JWT token and make thee requests in a secur
 Besides that, the system generates a receipt with the information and date when the things will be collected.
  One idea is to try to apply gamification and make people feel happier using the software. 
  
+ ## Postman collection
+ https://www.getpostman.com/collections/bd424bbea3deddefb911
+ 
  ## Technologies
  
  - PHP 7.2
