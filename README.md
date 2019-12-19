@@ -30,6 +30,3 @@ Besides that, the system generates a receipt with the information and date when 
 7. Implementei de forma centralizada o tratamento de erros da API. Os erros são lançados na repositório e capturados acima de toda a aplicação (pilha).
 8. In a real project i would implement much more things to improve the software and the maintenance proccess.
 
-## How do i use it? (With docker).
-
-
