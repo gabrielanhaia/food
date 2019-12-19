@@ -7,6 +7,7 @@ use App\Enums\CollectStatusEnum;
 use App\Exceptions\Api\ConflictException;
 use App\Exceptions\Api\NotFoundException;
 use App\Models\CollectRequest;
+use App\Models\Product;
 use App\Repositories\DTO\CollectRequestDTO;
 use App\Repositories\DTO\CollectRequestProductDTO;
 use App\Repositories\DTO\DTOInterface;
@@ -163,5 +164,44 @@ class CollectRequestRepository extends BaseRepository
         }
 
         return $collectRequest;
+    }
+
+    /**
+     * List products from a collect request.
+     *
+     * @param int $collectRequestId
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @throws NotFoundException
+     */
+    public function listProductsCollectRequest(int $collectRequestId)
+    {
+        $collectRequest = $this->get($collectRequestId);
+
+        $products = $collectRequest->products()->paginate();
+
+        return $products;
+    }
+
+    /**
+     * Get a product from a collect request.
+     *
+     * @param int $collectRequestId Collect request id to be updated.
+     * @param int $productId Product identifier to be searched.
+     * @return Product
+     * @throws NotFoundException
+     */
+    public function getProductCollectRequest(int $collectRequestId, int $productId): Product
+    {
+        $collectRequest = $this->get($collectRequestId);
+
+        $product = $collectRequest->products()
+            ->where('collect_request_product.id_product', '=', $productId)
+            ->first();
+
+        if (empty($product)) {
+            throw new NotFoundException('Product not found.');
+        }
+
+        return $product;
     }
 }

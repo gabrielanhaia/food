@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\CollectStatusEnum;
 use App\Enums\HttpStatusCodeEnum;
+use App\Exceptions\Api\ConflictException;
+use App\Exceptions\Api\NotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\CreateCollectRequest;
 use App\Http\Requests\Api\V1\UpdateCollectRequest;
 use App\Http\Resources\Api\V1\CollectRequestCollection;
+use App\Http\Resources\Api\V1\Product;
+use App\Http\Resources\Api\V1\ProductCollection;
 use App\Models\CollectRequest;
 use App\Repositories\{CollectRequestRepository, DTO\CollectRequestDTO, DTO\CollectRequestProductDTO};
 use Carbon\Carbon;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Class CollectRequestController
@@ -39,8 +46,8 @@ class CollectRequestController extends Controller
      * Method responsible for creating a collect request.
      *
      * @param CreateCollectRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\Api\ConflictException
+     * @return JsonResponse
+     * @throws ConflictException
      */
     public function createCollectRequest(CreateCollectRequest $request)
     {
@@ -77,8 +84,8 @@ class CollectRequestController extends Controller
      *
      * @param int $collectRequestId Collect request id to be updated.
      * @param UpdateCollectRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\Api\NotFoundException
+     * @return JsonResponse
+     * @throws NotFoundException
      */
     public function updateCollectRequest(int $collectRequestId, UpdateCollectRequest $request)
     {
@@ -125,7 +132,7 @@ class CollectRequestController extends Controller
      *
      * @param int $collectRequestId Collect request id to be updated.
      * @return \App\Http\Resources\Api\V1\CollectRequest
-     * @throws \App\Exceptions\Api\NotFoundException
+     * @throws NotFoundException
      */
     public function getCollectRequest(int $collectRequestId)
     {
@@ -135,17 +142,47 @@ class CollectRequestController extends Controller
     }
 
     /**
-     *
      * Cancel a collect request.
      *
      * @param int $collectRequestId Collect request id to be updated.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     * @throws \App\Exceptions\Api\NotFoundException
+     * @return ResponseFactory|Response
+     * @throws NotFoundException
      */
     public function cancelCollectRequest(int $collectRequestId)
     {
         $this->collectRequestRepository->delete($collectRequestId);
 
         return response('', HttpStatusCodeEnum::NO_CONTENT);
+    }
+
+    /**
+     * List products from a collect request.
+     *
+     * @param int $collectRequestId Collect request id to be updated.
+     * @return ProductCollection
+     * @throws NotFoundException
+     */
+    public function listProductsCollectRequest(int $collectRequestId)
+    {
+        $products = $this->collectRequestRepository->listProductsCollectRequest($collectRequestId);
+
+        return new ProductCollection($products);
+    }
+
+
+    /**
+     * Get a product from a collect request.
+     *
+     * @param int $collectRequestId Collect request id to be updated.
+     * @param int $productId Product identifier to be searched.
+     *
+     * @return Product
+     * @throws NotFoundException
+     */
+    public function getProductCollectRequest(int $collectRequestId, int $productId)
+    {
+        $product = $this->collectRequestRepository->getProductCollectRequest($collectRequestId, $productId);
+
+        return new Product($product);
     }
 }

@@ -33,8 +33,15 @@ Route::group([
     'prefix' => 'collect-requests',
 ], function ($router) {
     Route::post('', 'CollectRequestController@createCollectRequest');
-    Route::get('{id}', 'CollectRequestController@getCollectRequest');
+    Route::get('{id_collect_request}', 'CollectRequestController@getCollectRequest');
     Route::get('', 'CollectRequestController@listAllCollectRequests');
-    Route::put('{id}', 'CollectRequestController@updateCollectRequest');
-    Route::delete('{id}', 'CollectRequestController@deleteCollectRequest');
+    Route::put('{id_collect_request}', 'CollectRequestController@updateCollectRequest');
+    Route::delete('{id_collect_request}', 'CollectRequestController@deleteCollectRequest');
+
+    Route::group([
+        'prefix' => '{id_collect_request}/products'
+    ], function ($router) {
+        Route::get('', 'CollectRequestController@listProductsCollectRequest');
+        Route::get('{id_product}', 'CollectRequestController@getProductCollectRequest');
+    });
 });
